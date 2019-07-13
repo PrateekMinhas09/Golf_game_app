@@ -13,52 +13,19 @@ public class FingerMove : MonoBehaviour
     public GameObject EmptyObj;
     public float distance;
     public Rigidbody sphrb;
-    float forceMul = 0.15f;
+   public float forceMul = 0.0275f;
     Vector2 initTouchPos;
-    Vector2 DirNormalized;
+    public  Vector2 DirNormalized;
+    public float Distance;
     public bool canMove= true;
+    public GameObject Arrow;
+    public float ScaleMulArrow = 0.1f;
+    public float angle;
     private void Update()
     {
 
 
-        /* if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
-         {
-             Vector3 initTouchPos =  Input.GetTouch(0).position;
-             Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-             RaycastHit hit;
-             Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow, 100f);
-             if (Physics.Raycast(ray, out hit))
-             {
-                 Debug.Log(hit.transform.name);
-                 if (hit.collider.tag == "sphere")
-                 {
-
-                     // GameObject touchedObject = hit.transform.gameObject;
-                     EmptyObj.transform.position = hit.transform.gameObject.transform.position;
-                     Debug.Log(EmptyObj.transform.position);
-
-
-                     allowMove = true;
-                     if(Input.GetTouch(0).phase == TouchPhase.Moved && allowMove== true)
-                     {
-                         Debug.Log("inside MOved");
-                         if(Input.GetTouch(0).phase == TouchPhase.Ended)
-                         {
-                             Debug.Log("inside ended");
-                             Vector3 finalPos = Input.GetTouch(0).position;
-                             distance = CalculateDist(initTouchPos, finalPos);
-                            Vector3 Dir =  CalculateDir(initTouchPos, finalPos);
-                             Movement(Dir, distance);
-                         }
-
-                     }
-
-
-
-                     Debug.Log("Touched " + EmptyObj.transform.name);
-                 }
-             }
-         }*/
+       
 
         if (Input.touchCount > 0)
         {
@@ -76,10 +43,10 @@ public class FingerMove : MonoBehaviour
                         if (hit.collider.tag == "sphere")
                         {
 
-                            // GameObject touchedObject = hit.transform.gameObject;
+                            
                             Debug.Log("Sphere Touched");
 
-                            // Debug.Log(EmptyObj.transform.position);
+                           
 
 
                             allowMove = true;
@@ -91,14 +58,17 @@ public class FingerMove : MonoBehaviour
                     if (allowMove)
                     {
                         Vector2 direction = (touch.position - initTouchPos);
-                        DirNormalized = direction / direction.magnitude; //imp 1
                         
-                    }
+                        
+
+                        DirNormalized = direction / direction.magnitude;
+                        
+                 }
                     break;
 
                 case TouchPhase.Ended:
                     
-                    float Distance = Vector2.Distance(touch.position, initTouchPos);
+                     Distance = Vector2.Distance(touch.position, initTouchPos);
                     Movement(DirNormalized, Distance);
                    
                     break;
@@ -109,17 +79,7 @@ public class FingerMove : MonoBehaviour
         }
     }
 
-   /* public float  CalculateDist(Vector2 a ,Vector2 b)
-    {
-       return  Vector2.Distance(a, b);
-        
-    }
-    public Vector2 CalculateDir(Vector2 a , Vector2 b)
-
-    {
-        return ((b-a)/distance);
-       
-    }*/
+  
     public void Movement(Vector2 dir ,float dis )
     {
         if (canMove && Input.GetTouch(0).phase == TouchPhase.Ended&& allowMove== true)
